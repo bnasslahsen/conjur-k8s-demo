@@ -6,7 +6,7 @@ This application requires access to an H2 database.
 After cloning this repository.
 
 1. Publish docker image
-- REGISTRY: Is your registry URL
+- REGISTRY: Docker registry URL
 ```shell
   podman build --arch=amd64 -f docker/Dockerfile -t conjur-k8s-demo:1.0 .
   podman tag conjur-k8s-demo:1.0 conjur-k8s-demo:latest
@@ -45,6 +45,21 @@ cd kubernetes/secrets-provider-for-k8s-init
     - Run the following commands:
 ```shell
 cd kubernetes/secrets-provider-for-k8s-sidecar
+./deploy-app.sh
+```
+- Option 3:  With Summon as Init Container
+  - Edit the `kubernetes/summon-init/.env` and set the values depending on your target environment.
+  - Run the following commands:
+```shell
+cd kubernetes/summon-init
+./deploy-app.sh
+```
+
+- Option 4:  With Summon as Sidecar Container
+  - Edit the `kubernetes/summon-sidecar/.env` and set the values depending on your target environment.
+  - Run the following commands:
+```shell
+cd kubernetes/summon-sidecar
 ./deploy-app.sh
 ```
 
