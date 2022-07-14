@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.h2.Driver
+  jpa:
+    generate-ddl: true
+    database: h2
+    hibernate:
+      ddl-auto: update
+springdoc:
+  writer-with-order-by-keys: true
+  swagger-ui:
+    use-root-path: true
+

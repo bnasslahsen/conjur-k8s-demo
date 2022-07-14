@@ -1,0 +1,12 @@
+- !host
+  id: test-app
+  annotations:
+    authn-k8s/namespace: test-app-namespace
+    authn-k8s/service-account: test-app-sa
+    authn-k8s/authentication-container-name: authenticator
+
+- !grant
+  roles:
+    - !group conjur/authn-k8s/dev-cluster/consumers
+  members:
+    - !host test-app
