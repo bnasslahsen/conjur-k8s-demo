@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-db
+  labels:
+    app: test-db
+  namespace: test-app-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-db
+  template:
+    metadata:
+      labels:
+        app: test-db
+    spec:
+      containers:
+        - name: test-db
+          image: postgres:9.6
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: 5b3e5f75cb3cdc725fe40318
+            - name: POSTGRES_DB
+              value: test_app
+            - name: POSTGRES_USER
+              value: test_app
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: test-db
+spec:
+  selector:
+    app: test-db
+  ports:
+    - port: 5432
+      targetPort: 5432
+      nodePort: 30003
+  type: NodePort

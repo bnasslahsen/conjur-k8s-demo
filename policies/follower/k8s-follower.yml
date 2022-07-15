@@ -1,0 +1,12 @@
+- !host
+  id: k8s-follower
+  annotations:
+    authn-k8s/namespace: cyberark-conjur
+    authn-k8s/service-account: authn-k8s-sa
+
+- !grant
+  roles:
+    - !group conjur/authn-k8s/dev-cluster/consumers
+    - !group conjur/seed-generation/consumers
+  members:
+    - !host k8s-follower

@@ -5,12 +5,12 @@ This application requires access to an H2 database.
 ## Installation
 After cloning this repository.
 
-1. Publish docker image
-- REGISTRY: Docker registry URL
+1. Get the docker image
+An image is already available in dockerhub: `docker.io/bnasslahsen/conjur-k8s-demo`
+If you need to build the image:
 ```shell
-  podman build --arch=amd64 -f docker/Dockerfile -t conjur-k8s-demo:1.0 .
-  podman tag conjur-k8s-demo:1.0 conjur-k8s-demo:latest
-  podman push "${REGISTRY}/conjur-k8s-demo:latest"
+podman build --arch=amd64 -f docker/initial/Dockerfile -t conjur-k8s-demo:latest .
+podman tag conjur-k8s-demo:latest conjur-k8s-demo:1.0
 ```
 
 2. Load the Conjur policies
@@ -48,7 +48,15 @@ cd kubernetes/secrets-provider-for-k8s-sidecar
 ./deploy-app.sh
 ```
 - Option 3:  With Summon as Init Container
-  - Edit the `kubernetes/summon-init/.env` and set the values depending on your target environment.
+For this option, you will have to add summon utility to the image. 
+An image is already available in dockerhub: `docker.io/bnasslahsen/conjur-summon-k8s-demo`
+If you need to build the image:
+```shell
+podman build --arch=amd64 -f docker/summon/Dockerfile -t conjur-summon-k8s-demo:latest .
+podman tag conjur-summon-k8s-demo:latest conjur-summon-k8s-demo:1.0
+```
+
+  - Then edit the `kubernetes/summon-init/.env` and set the values depending on your target environment.
   - Run the following commands:
 ```shell
 cd kubernetes/summon-init
@@ -61,6 +69,15 @@ cd kubernetes/summon-init
 ```shell
 cd kubernetes/summon-sidecar
 ./deploy-app.sh
+```
+
+- Option 5:  With Secretless Broker
+For this option, you will have to use a supported Database (For example postgresql)
+An image is already available in dockerhub: `docker.io/bnasslahsen/conjur-secretless-k8s-demo`
+If you need to build the image:
+```shell
+podman build --arch=amd64 -f docker/secretless/Dockerfile -t conjur-secretless-k8s-demo:latest .
+podman tag conjur-secretless-k8s-demo:latest conjur-secretless-k8s-demo:1.0
 ```
 
 ## Running the pet-store demo

@@ -11,9 +11,13 @@ RUN curl -sSL https://raw.githubusercontent.com/cyberark/summon/main/install.sh 
 # The 'maven' base is used to package the application
 FROM maven:3.8.1-openjdk-17-slim as maven
 WORKDIR /build
-COPY ../pom.xml .
-COPY ../src src
-RUN --mount=type=cache,target=$HOME/.m2 mvn -f /build/pom.xml clean package -DskipTests
+COPY ../../pom.xml .
+# fetch all dependencies
+RUN mvn dependency:go-offline -B
+
+# copy other files
+COPY ../../src src
+RUN mvn -f /build/pom.xml clean package -DskipTests
 
 # STAGE:
 # This base is used for the final image
@@ -24,7 +28,7 @@ COPY --from=summon /usr/local/lib/summon /usr/local/lib/summon
 COPY --from=summon /usr/local/bin/summon /usr/local/bin/summon
 COPY --from=maven /build/target/conjur-k8s-demo-1.0.jar /app/target/conjur-k8s-demo-1.0.jar
 #---copy secrets.yml into image---#
-COPY summon/secrets.yml /etc/secrets.yml
+COPY docker/summon/secrets.yml /etc/secrets.yml
 
 EXPOSE 8080
 
