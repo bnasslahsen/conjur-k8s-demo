@@ -11,7 +11,8 @@ kubectl delete configmap secretless-config --ignore-not-found=true
 kubectl create configmap secretless-config --from-file=secretless.yml
 
 # DB DEPLOYMENT
-# kubectl replace --force -f db.yml
+kubectl replace --force -f db.yml
+kubectl wait deployment test-db --for condition=Available=True --timeout=90s
 
 # APP DEPLOYMENT
 sed -e "s|APP_NAMESPACE|${APP_NAMESPACE}|g; s|APP_NAME|${APP_NAME}|g; s|SERVICE_ACCOUNT_NAME|${SERVICE_ACCOUNT_NAME}|g; \

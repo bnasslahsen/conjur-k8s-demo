@@ -28,6 +28,11 @@ spec:
               value: test_app
             - name: POSTGRES_USER
               value: test_app
+          readinessProbe:
+            exec:
+              command: [ "psql", "-w", "-U", "test_app", "-c", "SELECT 1" ]
+            initialDelaySeconds: 20
+            timeoutSeconds: 2
 ---
 kind: Service
 apiVersion: v1
