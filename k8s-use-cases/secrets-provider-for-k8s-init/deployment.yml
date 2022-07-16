@@ -2,23 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: APP_NAME
-  name: APP_NAME
-  namespace: APP_NAMESPACE
+    app: $APP_NAME
+  name: $APP_NAME
+  namespace: $APP_NAMESPACE
 spec:
   selector:
     matchLabels:
-      app: APP_NAME
+      app: $APP_NAME
   replicas: 1
   template:
     metadata:
       labels:
-        app: APP_NAME
+        app: $APP_NAME
     spec:
-      serviceAccountName: SERVICE_ACCOUNT_NAME
+      serviceAccountName: $SERVICE_ACCOUNT_NAME
       containers:
-        - name: APP_NAME
-          image: IMAGE_NAME
+        - name: $APP_NAME
+          image: $IMAGE_NAME
           imagePullPolicy: Always
           env:
             - name: DB_URL
@@ -44,7 +44,7 @@ spec:
           name: authenticator
           env:
             - name: CONJUR_AUTHN_LOGIN
-              value: HOST_ID
+              value: $HOST_ID
             - name: CONTAINER_MODE
               value: init
             - name: MY_POD_NAME
@@ -88,11 +88,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: APP_NAME
-  namespace: APP_NAMESPACE
+  name: $APP_NAME
+  namespace: $APP_NAMESPACE
 spec:
   ports:
     - port: 8080
       targetPort: 8082
   selector:
-    app: APP_NAME
+    app: $APP_NAME

@@ -2,27 +2,27 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: APP_NAME
-  name: APP_NAME
-  namespace: APP_NAMESPACE
+    app: $APP_NAME
+  name: $APP_NAME
+  namespace: $APP_NAMESPACE
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: APP_NAME
+      app: $APP_NAME
   template:
     metadata:
       labels:
-        app: APP_NAME
+        app: $APP_NAME
     spec:
-      serviceAccountName: SERVICE_ACCOUNT_NAME
+      serviceAccountName: $SERVICE_ACCOUNT_NAME
       containers:
-        - image: IMAGE_NAME
-          name: APP_NAME
+        - image: $IMAGE_NAME
+          name: $APP_NAME
           imagePullPolicy: Always
           env:
             - name: DB_URL
-              value: jdbc:postgresql://localhost:5432/POSTGRESQL_DB?sslmode=disable
+              value: jdbc:postgresql://localhost:5432/$POSTGRESQL_DB?sslmode=disable
             - name: DB_USERNAME
               value: dummy
             - name: DB_PASSWORD
@@ -37,7 +37,7 @@ spec:
             - containerPort: 5432
           env:
             - name: CONJUR_AUTHN_LOGIN
-              value: HOST_ID
+              value: $HOST_ID
             - name: MY_POD_NAME
               valueFrom:
                 fieldRef:
@@ -66,11 +66,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: APP_NAME
-  namespace: APP_NAMESPACE
+  name: $APP_NAME
+  namespace: $APP_NAMESPACE
 spec:
   ports:
     - port: 8080
       targetPort: 8081
   selector:
-    app: APP_NAME
+    app: $APP_NAME
