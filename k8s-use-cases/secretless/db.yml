@@ -1,48 +1,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-db
+  name: APP_DB_NAME
   labels:
-    app: test-db
-  namespace: test-app-namespace
+    app: APP_DB_NAME
+  namespace: APP_NAMESPACE
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: test-db
+      app: APP_DB_NAME
   template:
     metadata:
       labels:
-        app: test-db
+        app: APP_DB_NAME
     spec:
       containers:
-        - name: test-db
+        - name: APP_DB_NAME
           image: postgres:9.6
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5432
           env:
-            - name: POSTGRES_PASSWORD
-              value: 5b3e5f75cb3cdc725fe40318
             - name: POSTGRES_DB
-              value: test_app
+              value: POSTGRESQL_DB
+            - name: POSTGRES_PASSWORD
+              value: POSTGRESQL_PASSWORD
             - name: POSTGRES_USER
-              value: test_app
+              value: POSTGRESQL_USER
           readinessProbe:
             exec:
-              command: [ "psql", "-w", "-U", "test_app", "-c", "SELECT 1" ]
+              command: [ "psql", "-w", "-U", POSTGRESQL_USER, "-c", "SELECT 1" ]
             initialDelaySeconds: 20
             timeoutSeconds: 2
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: test-db
+  name: APP_DB_NAME
 spec:
   selector:
-    app: test-db
+    app: APP_DB_NAME
   ports:
     - port: 5432
       targetPort: 5432
-      nodePort: 30003
-  type: NodePort

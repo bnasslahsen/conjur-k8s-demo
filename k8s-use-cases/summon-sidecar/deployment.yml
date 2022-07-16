@@ -63,10 +63,9 @@ metadata:
   name: APP_NAME
   namespace: APP_NAMESPACE
 spec:
-  type: NodePort
   ports:
     - port: 8080
-      targetPort: TARGET_PORT
+      targetPort: 8085
   selector:
     app: APP_NAME
 ---

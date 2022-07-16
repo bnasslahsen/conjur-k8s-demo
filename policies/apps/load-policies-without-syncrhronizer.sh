@@ -10,8 +10,8 @@ conjur policy load -f app-secrets.yml -b root
 conjur variable set -i secrets/test-app/url -v jdbc:h2:mem:testdb
 conjur variable set -i secrets/test-app/username -v user
 conjur variable set -i secrets/test-app/password -v pass
-conjur variable set -i secrets/test-app/host-postgres -v 10.0.20.181
-conjur variable set -i secrets/test-app/port-postgres -v 30003
-conjur variable set -i secrets/test-app/username-postgres -v test_app
+conjur variable set -i secrets/test-app/host-postgres -v test-db.test-app-namespace.svc.cluster.local
+conjur variable set -i secrets/test-app/port-postgres -v 5432
+conjur variable set -i secrets/test-app/username-postgres -v test_db
 conjur variable set -i secrets/test-app/password-postgres -v 5b3e5f75cb3cdc725fe40318
 

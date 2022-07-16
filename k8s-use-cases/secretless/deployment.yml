@@ -2,51 +2,33 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: test-app-secretless
-  name: test-app-secretless
-  namespace: test-app-namespace
+    app: APP_NAME
+  name: APP_NAME
+  namespace: APP_NAMESPACE
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: test-app-secretless
+      app: APP_NAME
   template:
     metadata:
       labels:
-        app: test-app-secretless
+        app: APP_NAME
     spec:
-      serviceAccountName: test-app-sa
+      serviceAccountName: SERVICE_ACCOUNT_NAME
       containers:
-        - image: docker.io/bnasslahsen/conjur-secretless-k8s-demo
-          name: test-app-secretless
+        - image: IMAGE_NAME
+          name: APP_NAME
           imagePullPolicy: Always
           env:
             - name: DB_URL
-              value: jdbc:postgresql://localhost:5432/test_app?sslmode=disable
+              value: jdbc:postgresql://localhost:5432/POSTGRESQL_DB?sslmode=disable
             - name: DB_USERNAME
               value: dummy
             - name: DB_PASSWORD
               value: dummy
           ports:
             - containerPort: 8080
-          livenessProbe:
-            httpGet:
-              path: /actuator/health/liveness
-              port: 8080
-            initialDelaySeconds: 20
-            periodSeconds: 10
-            failureThreshold: 5
-          readinessProbe:
-            httpGet:
-              path: /actuator/health/readiness
-              port: 8080
-            initialDelaySeconds: 20
-            periodSeconds: 10
-            failureThreshold: 5
-          lifecycle:
-            preStop:
-              exec:
-                command: [ "sh", "-c", "sleep 10" ]
         - name: authenticator
           image: docker.io/cyberark/secretless-broker:latest
           imagePullPolicy: Always
@@ -55,7 +37,7 @@ spec:
             - containerPort: 5432
           env:
             - name: CONJUR_AUTHN_LOGIN
-              value: host/test-app
+              value: HOST_ID
             - name: MY_POD_NAME
               valueFrom:
                 fieldRef:
@@ -84,12 +66,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-app-secretless
-  namespace: test-app-namespace
+  name: APP_NAME
+  namespace: APP_NAMESPACE
 spec:
-  type: NodePort
   ports:
     - port: 8080
-      targetPort: 8086
+      targetPort: 8081
   selector:
-    app: test-app-secretless
+    app: APP_NAME

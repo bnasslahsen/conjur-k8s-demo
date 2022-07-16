@@ -5,7 +5,6 @@ spring:
     password: ${DB_PASSWORD}
   jpa:
     generate-ddl: true
-    database: h2
     hibernate:
       ddl-auto: update
 springdoc:
