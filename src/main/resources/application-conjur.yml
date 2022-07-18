@@ -1,0 +1,9 @@
+spring:
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+springdoc:
+  writer-with-order-by-keys: true
+  swagger-ui:
+    use-root-path: true
