@@ -4,8 +4,9 @@ This application requires access to an H2 database.
 
 ## Pre-requisites
 - podman
-- kubectl
+- kubectl / oc
 - conjur-cli
+- envsubst / openssl / jq
 
 ## Kubernetes / OCP Setup
 
@@ -67,74 +68,53 @@ podman build --arch=amd64 -f docker/springboot/Dockerfile -t conjur-springboot-k
 podman tag conjur-springboot-k8s-demo:latest conjur-springboot-k8s-demo:1.0
 ```
 
-## Applying the Conjur policies
-```shell
-cd policies
-# If you are not using the Vault synchronizer
-./load-policies-without-syncrhronizer.sh
-# If you are using the Vault synchronizer
-./load-policies-with-syncrhronizer.sh
-```
-
 ## Deploy your application to k8s/Openshift
+Once you have a conjur cluster up and running, policies configured and the initial setup of your k8s/Openshift cluster is done:
+Edit the `.env` file and set the values depending on your target environment.
+Then choose the option you would like to test and run the related commands.
 
 - Option 0:  With k8s/Openshift secrets
-    - Edit the `k8s-use-cases/basic-k8s-secrets/.env` and set the values depending on your target environment.
-    - Run the following commands:
 ```shell
 cd k8s-use-cases/basic-k8s-secrets
 ./deploy-app.sh
 ```
 
 - Option 1:  With Secrets Provider for Kubernetes As Init Container
-    - Edit the `k8s-use-cases/secrets-provider-for-k8s-init/.env` and set the values depending on your target environment.
-    - Run the following commands:
 ```shell
 cd k8s-use-cases/secrets-provider-for-k8s-init
 ./deploy-app.sh
 ```
 
 - Option 2: With Secrets Provider for Kubernetes As Sidecar Container
-    - Edit the `k8s-use-cases/secrets-provider-for-k8s-sidecar/.env` and set the values depending on your target environment.
-    - Run the following commands:
 ```shell
 cd k8s-use-cases/secrets-provider-for-k8s-sidecar
 ./deploy-app.sh
 ```
 - Option 3:  With Summon as Init Container
-  - Edit the `k8s-use-cases/summon-init/.env` and set the values depending on your target environment.
-  - Run the following commands:
 ```shell
 cd k8s-use-cases/summon-init
 ./deploy-app.sh
 ```
 
 - Option 4:  With Summon as Sidecar Container
-  - Edit the `k8s-use-cases/summon-sidecar/.env` and set the values depending on your target environment.
-  - Run the following commands:
 ```shell
 cd k8s-use-cases/summon-sidecar
 ./deploy-app.sh
 ```
 
 - Option 5:  With Secretless Broker
-  - Edit the `k8s-use-cases/secretless/.env` and set the values depending on your target environment.
-  - Run the following commands:
 ```shell
 cd k8s-use-cases/secretless
 ./deploy-app.sh
 ```
 
 - Option 6:  With Spring Boot
-  - Edit the `k8s-use-cases/springboot/.env` and set the values depending on your target environment.
-  - Run the following commands:
 ```shell
 cd k8s-use-cases/springboot
 ./deploy-app.sh
 ```
 
 ## Running the pet-store demo
-
 ### Routes
 The demo application mocks a pet store service which controls an inventory of pets in a persistent database. The following routes are exposed:
 
