@@ -8,6 +8,8 @@ This application requires access to an H2 database.
 - conjur-cli
 
 ## Kubernetes / OCP Setup
+
+```shell
 cd  policies/k8s-authenticator
 ./load-policies.sh
 cd  policies/follower
@@ -22,6 +24,7 @@ cd initial-setup
 ./3-configure-follower.sh
 # Or ./3-configure-ocp-follower.sh
 ./4-configure-app.sh
+```
 
 ## Building the Docker images (optional)
 Note: All the docker images are already available in dockerhub repository: 
