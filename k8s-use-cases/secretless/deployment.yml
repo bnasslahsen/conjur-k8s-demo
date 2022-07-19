@@ -2,23 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: $APP_NAME
-  name: $APP_NAME
+    app: $APP_NAME_SECRETLESS
+  name: $APP_NAME_SECRETLESS
   namespace: $APP_NAMESPACE
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: $APP_NAME
+      app: $APP_NAME_SECRETLESS
   template:
     metadata:
       labels:
-        app: $APP_NAME
+        app: $APP_NAME_SECRETLESS
     spec:
-      serviceAccountName: $SERVICE_ACCOUNT_NAME
+      serviceAccountName: $APP_SERVICE_ACCOUNT_NAME
       containers:
-        - image: $IMAGE_NAME
-          name: $APP_NAME
+        - image: $IMAGE_NAME_SECRETLESS
+          name: $APP_NAME_SECRETLESS
           imagePullPolicy: Always
           env:
             - name: DB_URL
@@ -29,7 +29,7 @@ spec:
               value: dummy
           ports:
             - containerPort: 8080
-        - name: authenticator
+        - name: $AUTHENTICATION_CONTAINER_NAME
           image: docker.io/cyberark/secretless-broker:latest
           imagePullPolicy: Always
           args: ["-f", "/etc/secretless/secretless.yml"]
@@ -37,7 +37,7 @@ spec:
             - containerPort: 5432
           env:
             - name: CONJUR_AUTHN_LOGIN
-              value: $HOST_ID
+              value: $APP_HOST_ID
             - name: MY_POD_NAME
               valueFrom:
                 fieldRef:
@@ -66,11 +66,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_NAME
+  name: $APP_NAME_SECRETLESS
   namespace: $APP_NAMESPACE
 spec:
   ports:
     - port: 8080
       targetPort: 8081
   selector:
-    app: $APP_NAME
+    app: $APP_NAME_SECRETLESS

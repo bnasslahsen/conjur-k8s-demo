@@ -15,10 +15,10 @@ spec:
       labels:
         app: $APP_NAME
     spec:
-      serviceAccountName: $SERVICE_ACCOUNT_NAME
+      serviceAccountName: $APP_SERVICE_ACCOUNT_NAME
       containers:
         - name: $APP_NAME
-          image: $IMAGE_NAME
+          image: $IMAGE_NAME_BASIC
           imagePullPolicy: Always
           env:
             - name: DB_URL

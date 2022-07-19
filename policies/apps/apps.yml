@@ -1,12 +1,12 @@
 - !host
-  id: test-app
+  id: $APP_NAME
   annotations:
-    authn-k8s/namespace: test-app-namespace
-    authn-k8s/service-account: test-app-sa
-    authn-k8s/authentication-container-name: authenticator
+    authn-k8s/namespace: $APP_NAMESPACE
+    authn-k8s/service-account: $APP_SERVICE_ACCOUNT_NAME
+    authn-k8s/authentication-container-name: $AUTHENTICATION_CONTAINER_NAME
 
 - !grant
   roles:
-    - !group conjur/authn-k8s/dev-cluster/consumers
+    - !group conjur/authn-k8s/$SERVICE_ID/consumers
   members:
-    - !host test-app
+    - !host $APP_NAME

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -a
-source .env
+source ../../.env
 set +a
 
 kubectl config set-context --current --namespace="$APP_NAMESPACE"

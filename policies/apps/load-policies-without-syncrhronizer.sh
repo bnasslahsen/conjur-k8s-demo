@@ -1,17 +1,25 @@
 #!/bin/bash
 
+set -a
+source ../../.env
+set +a
+
 #Define the application as a Conjur host in policy
-conjur policy load -f apps.yml -b root
+envsubst < apps.yml > apps.tmp.yml
+conjur policy load -b root -f apps.tmp.yml
+rm apps.tmp.yml
 
 # Case of Secrets in Conjur
-conjur policy load -f app-secrets.yml -b root
+envsubst < app-secrets.yml > app-secrets.tmp.yml
+conjur policy load -b root -f app-secrets.tmp.yml
+rm app-secrets.tmp.yml
 
 # Set variables
 conjur variable set -i secrets/test-app/url -v jdbc:h2:mem:testdb
 conjur variable set -i secrets/test-app/username -v user
 conjur variable set -i secrets/test-app/password -v pass
-conjur variable set -i secrets/test-app/host-postgres -v test-db.test-app-namespace.svc.cluster.local
+conjur variable set -i secrets/test-app/host-postgres -v "$APP_DB_NAME"."$APP_NAMESPACE".svc.cluster.local
 conjur variable set -i secrets/test-app/port-postgres -v 5432
-conjur variable set -i secrets/test-app/username-postgres -v test_db
-conjur variable set -i secrets/test-app/password-postgres -v 5b3e5f75cb3cdc725fe40318
+conjur variable set -i secrets/test-app/username-postgres -v "$POSTGRESQL_USER"
+conjur variable set -i secrets/test-app/password-postgres -v "$POSTGRESQL_PASSWORD"
 

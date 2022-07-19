@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -a
-source .env
+source ../../.env
 set +a
 
 kubectl config set-context --current --namespace="$APP_NAMESPACE"
@@ -27,9 +27,11 @@ kubectl create secret generic conjur-ssl-cert  \
 
 # DEPLOYMENT
 envsubst < deployment.yml | kubectl replace --force -f -
-if ! kubectl wait deployment "$APP_NAME" --for condition=Available=True --timeout=90s
+if ! kubectl wait deployment "$APP_NAME_SPRINGBOOT" --for condition=Available=True --timeout=90s
   then exit 1
 fi
 
-kubectl get services "$APP_NAME"
+kubectl get services "$APP_NAME_SPRINGBOOT"
 kubectl get pods
+
+rm "$CONJUR_SSL_CERTIFICATE"

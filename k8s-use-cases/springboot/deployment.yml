@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: $APP_NAME
+  name: $APP_NAME_SPRINGBOOT
   namespace: $APP_NAMESPACE
   labels:
-    app: $APP_NAME
+    app: $APP_NAME_SPRINGBOOT
 spec:
   selector:
     matchLabels:
-      app: $APP_NAME
+      app: $APP_NAME_SPRINGBOOT
   replicas: 1
   template:
     metadata:
       labels:
-        app: $APP_NAME
+        app: $APP_NAME_SPRINGBOOT
     spec:
-      serviceAccountName: $SERVICE_ACCOUNT_NAME
+      serviceAccountName: $APP_SERVICE_ACCOUNT_NAME
       containers:
-        - name: $APP_NAME
-          image: $IMAGE_NAME
+        - name: $APP_NAME_SPRINGBOOT
+          image: $IMAGE_NAME_SPRINGBOOT
           imagePullPolicy: Always
           env:
             - name: SPRING_PROFILES_ACTIVE
@@ -46,7 +46,7 @@ spec:
             - name: CONJUR_CERT_FILE
               value: $CONJUR_CERT_FILE
             - name: SERVER_PORT
-              value: '8080'  # Workaround for https://github.com/cyberark/conjur-spring-boot-sdk/issues/64
+              value: '8080'
           ports:
             - containerPort: 8080
           volumeMounts:
@@ -61,12 +61,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_NAME
+  name: $APP_NAME_SPRINGBOOT
   namespace: $APP_NAMESPACE
 spec:
   ports:
     - port: 8080
       targetPort: 8086
   selector:
-    app: $APP_NAME
+    app: $APP_NAME_SPRINGBOOT
 ---

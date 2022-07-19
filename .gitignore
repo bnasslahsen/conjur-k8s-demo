@@ -130,6 +130,7 @@ Desktop.ini
 *.pem
 *.crt
 *.cer
+*.key
 
 ######################
 # Gradle Wrapper

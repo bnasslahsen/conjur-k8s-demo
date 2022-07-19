@@ -2,23 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: $APP_NAME
-  name: $APP_NAME
+    app: $APP_NAME_SUMMON_INIT
+  name: $APP_NAME_SUMMON_INIT
   namespace: $APP_NAMESPACE
 spec:
   selector:
     matchLabels:
-      app: $APP_NAME
+      app: $APP_NAME_SUMMON_INIT
   replicas: 1
   template:
     metadata:
       labels:
-        app: $APP_NAME
+        app: $APP_NAME_SUMMON_INIT
     spec:
-      serviceAccountName: $SERVICE_ACCOUNT_NAME
+      serviceAccountName: $APP_SERVICE_ACCOUNT_NAME
       containers:
-        - name: $APP_NAME
-          image: $IMAGE_NAME
+        - name: $APP_NAME_SUMMON_INIT
+          image: $IMAGE_NAME_SUMMON
           imagePullPolicy: Always
           env:
             - name: CONJUR_AUTHN_TOKEN_FILE
@@ -35,10 +35,10 @@ spec:
       initContainers:
         - image: cyberark/conjur-authn-k8s-client
           imagePullPolicy: Always
-          name: authenticator
+          name: $AUTHENTICATION_CONTAINER_NAME
           env:
             - name: CONJUR_AUTHN_LOGIN
-              value: $HOST_ID
+              value: $APP_HOST_ID
             - name: CONTAINER_MODE
               value: init
             - name: MY_POD_NAME
@@ -68,12 +68,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_NAME
+  name: $APP_NAME_SUMMON_INIT
   namespace: $APP_NAMESPACE
 spec:
   ports:
     - port: 8080
       targetPort: 8084
   selector:
-    app: $APP_NAME
+    app: $APP_NAME_SUMMON_INIT
 ---

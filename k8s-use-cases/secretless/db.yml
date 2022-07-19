@@ -15,6 +15,7 @@ spec:
       labels:
         app: $APP_DB_NAME
     spec:
+      serviceAccountName: $APP_SERVICE_ACCOUNT_NAME
       containers:
         - name: $APP_DB_NAME
           image: postgres:9.6

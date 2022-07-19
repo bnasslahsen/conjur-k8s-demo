@@ -1,12 +1,13 @@
 - !host
-  id: k8s-follower
+  id: $FOLLOWER_NAME
   annotations:
-    authn-k8s/namespace: cyberark-conjur
-    authn-k8s/service-account: authn-k8s-sa
+    authn-k8s/namespace: $CONJUR_NAMESPACE
+    authn-k8s/service-account: $SERVICE_ACCOUNT_NAME
+    authn-k8s/authentication-container-name: $AUTHENTICATION_CONTAINER_NAME
 
 - !grant
   roles:
-    - !group conjur/authn-k8s/dev-cluster/consumers
+    - !group conjur/authn-k8s/$SERVICE_ID/consumers
     - !group conjur/seed-generation/consumers
   members:
-    - !host k8s-follower
+    - !host $FOLLOWER_NAME
