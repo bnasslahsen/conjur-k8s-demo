@@ -2,30 +2,30 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: conjur-follower
+  name: $FOLLOWER_SERVICE_NAME
   labels:
-    app: conjur-follower
+    app: $FOLLOWER_SERVICE_NAME
 spec:
   ports:
     - port: 443
       name: https
   selector:
-    app: conjur-follower
+    app: $FOLLOWER_SERVICE_NAME
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: conjur-follower
+  name: $FOLLOWER_SERVICE_NAME
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: conjur-follower
+      app: $FOLLOWER_SERVICE_NAME
   template:
     metadata:
       labels:
-        app: conjur-follower
-        name: conjur-follower
+        app: $FOLLOWER_SERVICE_NAME
+        name: $FOLLOWER_SERVICE_NAME
         role: follower
     spec:
       serviceAccountName: $SERVICE_ACCOUNT_NAME
@@ -50,7 +50,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.namespace
             - name: FOLLOWER_HOSTNAME
-              value: conjur-follower
+              value: $FOLLOWER_SERVICE_NAME
             - name: SEEDFILE_DIR
               value: /tmp/seedfile
             - name: CONJUR_AUTHN_LOGIN

@@ -15,7 +15,7 @@ helm install cluster-prep cyberark/conjur-config-cluster-prep \
   --namespace "$CONJUR_NAMESPACE" \
   --create-namespace \
   --set conjur.account="$CONJUR_ACCOUNT" \
-  --set conjur.applianceUrl="https://conjur-follower.$CONJUR_NAMESPACE.svc.cluster.local" \
+  --set conjur.applianceUrl="https://$FOLLOWER_SERVICE_NAME.$CONJUR_NAMESPACE.svc.cluster.local" \
   --set conjur.certificateBase64=$(cat $CONJUR_SSL_CERTIFICATE | base64) \
   --set authnK8s.authenticatorID="$SERVICE_ID" \
   --set authnK8s.serviceAccount.name="$SERVICE_ACCOUNT_NAME"
